@@ -1,12 +1,25 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  Modal,
+  ScrollView,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Routes } from '../constants/Constants';
 import Theme from '../constants/Theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useSelector } from 'react-redux';
+import Login from '../shared/Login';
 
 const ProductDetails = props => {
   const data = props.route.params.data;
+  const [showLogin, setShowLogin] = useState(false);
+  const loggedIn = useSelector(state => state.login.login);
+
   const addDataToArray = async (key, newItem) => {
     try {
       const existingDataString = await AsyncStorage.getItem(key);
@@ -29,42 +42,64 @@ const ProductDetails = props => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.viewCard}>
-        <Text style={styles.category}>{data.category}</Text>
-        <View style={styles.imageView}>
-          <Image
-            source={{ uri: data.image }}
-            style={styles.fullWidth}
-            resizeMode="contain"
-          />
-        </View>
-        <Text style={styles.title}>{data.title}</Text>
-        <Text style={styles.description}>{data.description}</Text>
-        <View style={styles.flex}>
-          <Text style={styles.cost}>{data.price} ₹</Text>
-          <View style={styles.flex}>
-            <Icon
-              name={'star'}
-              size={20}
-              color={Theme.colors.secondaryColor}
-              style={{ opacity: 0.5 }}
+    <ScrollView>
+      <View style={styles.container}>
+        <View style={styles.viewCard}>
+          <Text style={styles.category}>{data.category}</Text>
+          <View style={styles.imageView}>
+            <Image
+              source={{ uri: data.image }}
+              style={styles.fullWidth}
+              resizeMode="contain"
             />
-            <Text>
-              {data.rating.rate} | {data.rating.count}
-            </Text>
           </View>
+          <Text style={styles.title}>{data.title}</Text>
+          <Text style={styles.description}>{data.description}</Text>
+          <View style={styles.flex}>
+            <Text style={styles.cost}>{data.price} ₹</Text>
+            <View style={styles.flex}>
+              <Icon
+                name={'star'}
+                size={20}
+                color={Theme.colors.secondaryColor}
+                style={{ opacity: 0.5 }}
+              />
+              <Text>
+                {data.rating.rate} | {data.rating.count}
+              </Text>
+            </View>
+          </View>
+          {loggedIn ? (
+            <TouchableOpacity
+              style={{ alignItems: 'center' }}
+              onPress={() => {
+                addDataToArray('CART', data);
+              }}
+            >
+              <Text style={styles.addCart}>Add to Cart</Text>
+            </TouchableOpacity>
+          ) : (
+            <Text style={styles.loginInTo} onPress={() => setShowLogin(true)}>
+              Login to Continue
+            </Text>
+          )}
         </View>
-        <TouchableOpacity
-          style={{ alignItems: 'center' }}
-          onPress={() => {
-            addDataToArray('CART', data);
-          }}
+        <Modal
+          visible={showLogin}
+          transparent
+          animationType="slide"
+          onRequestClose={() => setShowLogin(false)}
         >
-          <Text style={styles.addCart}>Add to Cart</Text>
-        </TouchableOpacity>
+          <Login
+            onClose={() => setShowLogin(false)}
+            onSuccess={() => {
+              setShowLogin(false);
+              addDataToArray('CART', data);
+            }}
+          />
+        </Modal>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -122,6 +157,12 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     elevation: 4,
     fontWeight: '500',
+  },
+  loginInTo: {
+    textAlign: 'center',
+    textDecorationLine: 'underline',
+    color: Theme.colors.primaryColor,
+    marginTop: 30,
   },
 });
 

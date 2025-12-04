@@ -13,7 +13,7 @@ const Stack = createStackNavigator();
 const AppNavigation = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={Routes.Name}>
+      <Stack.Navigator>
         <Stack.Screen
           name={Routes.Products}
           component={Products}

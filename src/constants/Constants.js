@@ -3,5 +3,4 @@ export const Routes = {
   ProductDetails: 'ProductDetails',
   Cart: 'Cart',
   Summary: 'Summary',
-  History: 'History',
 };

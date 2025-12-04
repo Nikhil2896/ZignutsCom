@@ -14,6 +14,24 @@ const Cart = props => {
     getData();
   }, []);
 
+  const saveOrder = async () => {
+    try {
+      const newOrder = {
+        id: Date.now(),
+        date: new Date().toISOString(),
+        items: data,
+        totalPrice: orderTotal,
+      };
+      const existingOrders = await AsyncStorage.getItem('Orders_Data');
+      let orders = existingOrders ? JSON.parse(existingOrders) : [];
+      orders.push(newOrder);
+      await AsyncStorage.setItem('Orders_Data', JSON.stringify(orders));
+      return newOrder;
+    } catch (error) {
+      console.error('Error saving order:', error);
+    }
+  };
+
   const getData = async () => {
     const existingDataString = await AsyncStorage.getItem('CART');
     let jsonData = JSON.parse(existingDataString);
@@ -30,6 +48,7 @@ const Cart = props => {
 
   const clearCart = async () => {
     try {
+      saveOrder();
       await AsyncStorage.removeItem('CART');
       goToSummary();
     } catch (e) {

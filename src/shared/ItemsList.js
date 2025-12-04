@@ -18,7 +18,7 @@ const ItemsList = props => {
         <Icon
           name={'clipboard-text-multiple-outline'}
           size={200}
-          color={Theme.colors.primary}
+          color={Theme.colors.primaryColor}
           style={{ opacity: 0.5 }}
         />
         <Text style={styles.emptyText}>{props.emptyText}</Text>
@@ -60,9 +60,8 @@ const ItemsList = props => {
         <FlatList
           data={props.data}
           renderItem={renderItem}
-          keyExtractor={item => item.key}
+          keyExtractor={item => item.id}
           ListEmptyComponent={empty}
-          contentContainerStyle={styles.list}
         />
       )}
     </View>
@@ -75,13 +74,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Theme.colors.background,
+    paddingVertical: 10,
   },
   empty: {
     alignItems: 'center',
     marginVertical: '50%',
   },
   emptyText: {
-    color: Theme.colors.primary,
+    color: Theme.colors.primaryColor,
     marginTop: 20,
     fontSize: Theme.fontSize.font15,
   },
@@ -119,9 +119,5 @@ const styles = StyleSheet.create({
   cost: {
     fontSize: Theme.fontSize.font15,
     color: Theme.colors.primaryColor,
-  },
-  list: {
-    flexDirection: 'column-reverse',
-    paddingVertical: 10,
   },
 });

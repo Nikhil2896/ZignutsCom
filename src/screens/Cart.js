@@ -25,7 +25,7 @@ const Cart = props => {
     let val = (totalVal = data.reduce((a, b) => {
       return a + b.price;
     }, 0));
-    return Math.floor(val);
+    return val.toFixed(2);
   };
 
   const clearCart = async () => {

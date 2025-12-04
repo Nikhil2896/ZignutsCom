@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
 import axios from 'axios';
 import { Routes } from '../constants/Constants';
 import Theme from '../constants/Theme';
@@ -30,6 +30,12 @@ const Products = props => {
 
   return (
     <View style={styles.container}>
+      <View style={styles.nameView}>
+        <Image
+          source={require('../../assets/appName.png')}
+          style={{ width: 180, height: 30 }}
+        />
+      </View>
       <ItemsList
         data={data}
         from={Routes.Products}
@@ -45,6 +51,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Theme.colors.background,
+  },
+  nameView: {
+    backgroundColor: Theme.colors.primaryColor,
+    alignItems: 'center',
+    padding: 20,
   },
 });
 

@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Theme from '../constants/Theme';
+import { Routes } from '../constants/Constants';
 
 const ItemsList = props => {
   const empty = () => {
@@ -31,7 +32,11 @@ const ItemsList = props => {
         activeOpacity={0.7}
         key={index}
         style={styles.card}
-        onPress={() => {}}
+        onPress={() => {
+          props.navigation.navigate(Routes.ProductDetails, {
+            data: renderData.item,
+          });
+        }}
       >
         <View style={styles.imageView}>
           <Image
@@ -109,9 +114,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: Theme.fontSize.font14,
     width: '80%',
+    fontWeight: '500',
   },
   cost: {
     fontSize: Theme.fontSize.font15,
+    color: Theme.colors.primaryColor,
   },
   list: {
     flexDirection: 'column-reverse',

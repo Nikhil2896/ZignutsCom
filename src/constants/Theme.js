@@ -20,9 +20,11 @@ export const Theme = {
   },
 
   fontSize: {
+    font12: 12,
     font14: 14,
     font15: 15,
     font18: 18,
+    font20: 20,
     error: 13,
   },
 

@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  ScrollView,
-} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Routes } from '../constants/Constants';
 import Theme from '../constants/Theme';
@@ -24,6 +17,7 @@ const ProductDetails = props => {
       const isDuplicate = existingArray.some(item => item.id === newItem.id);
       if (isDuplicate) {
         props.navigation.navigate(Routes.Cart);
+        return;
       }
       existingArray.push(newItem);
       const updatedDataString = JSON.stringify(existingArray);
@@ -35,44 +29,42 @@ const ProductDetails = props => {
   };
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <View style={styles.viewCard}>
-          <Text style={styles.category}>{data.category}</Text>
-          <View style={styles.imageView}>
-            <Image
-              source={{ uri: data.image }}
-              style={styles.fullWidth}
-              resizeMode="contain"
-            />
-          </View>
-          <Text style={styles.title}>{data.title}</Text>
-          <Text style={styles.description}>{data.description}</Text>
-          <View style={styles.flex}>
-            <Text style={styles.cost}>{data.price} ₹</Text>
-            <View style={styles.flex}>
-              <Icon
-                name={'star'}
-                size={20}
-                color={Theme.colors.secondaryColor}
-                style={{ opacity: 0.5 }}
-              />
-              <Text>
-                {data.rating.rate} | {data.rating.count}
-              </Text>
-            </View>
-          </View>
-          <TouchableOpacity
-            style={{ alignItems: 'center' }}
-            onPress={() => {
-              addDataToArray('CART', data);
-            }}
-          >
-            <Text style={styles.addCart}>Add to Cart</Text>
-          </TouchableOpacity>
+    <View style={styles.container}>
+      <View style={styles.viewCard}>
+        <Text style={styles.category}>{data.category}</Text>
+        <View style={styles.imageView}>
+          <Image
+            source={{ uri: data.image }}
+            style={styles.fullWidth}
+            resizeMode="contain"
+          />
         </View>
+        <Text style={styles.title}>{data.title}</Text>
+        <Text style={styles.description}>{data.description}</Text>
+        <View style={styles.flex}>
+          <Text style={styles.cost}>{data.price} ₹</Text>
+          <View style={styles.flex}>
+            <Icon
+              name={'star'}
+              size={20}
+              color={Theme.colors.secondaryColor}
+              style={{ opacity: 0.5 }}
+            />
+            <Text>
+              {data.rating.rate} | {data.rating.count}
+            </Text>
+          </View>
+        </View>
+        <TouchableOpacity
+          style={{ alignItems: 'center' }}
+          onPress={() => {
+            addDataToArray('CART', data);
+          }}
+        >
+          <Text style={styles.addCart}>Add to Cart</Text>
+        </TouchableOpacity>
       </View>
-    </ScrollView>
+    </View>
   );
 };
 
@@ -129,6 +121,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     borderRadius: 4,
     elevation: 4,
+    fontWeight: '500',
   },
 });
 
